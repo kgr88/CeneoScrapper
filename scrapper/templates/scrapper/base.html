@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <a href="{% url 'scrapper:ekstrakcja' %}">Ekstrakcja opinii</a>
+    <a href="{% url 'scrapper:lista' %}">Lista produktów</a>
+    <a href="{% url 'scrapper:home_page' %}">Strona główna</a>
+    <a href="{% url 'scrapper:autor' %}">O autorze</a><br>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
