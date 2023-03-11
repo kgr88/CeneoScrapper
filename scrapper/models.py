@@ -1,6 +1,7 @@
 from django.db import models
 from bs4 import BeautifulSoup
 import requests
+from datetime import datetime
 
 
 # Create your models here.
@@ -17,7 +18,7 @@ class Opinion(models.Model):
     author = models.CharField(max_length=128)
     rating = models.DecimalField(max_digits=2, decimal_places=1)
     recommended = models.BooleanField
-    purchase_confirmation = models.BooleanField
+    purchase_confirmation = models.BooleanField(default=False)
     opinion_date = models.DateField
     purchase_date = models.DateField
     likes = models.PositiveIntegerField
@@ -33,21 +34,30 @@ class Opinion(models.Model):
             print(recomendation)
             if recomendation == "Polecam":
                 self.recommended = True
+                print(self.recommended)
             else:
                 self.recommended = False
+                print(self.recommended)
         except AttributeError:
             self.recommended = None
+            print(self.recommended)
         self.rating = float(data.find('span', {'class': 'user-post__score-count'}).text[:-2].replace(",", "."))
+        try:
+            data.find('div', {'class': 'review-pz'})
+            self.purchase_confirmation = True
+        except AttributeError:
+            pass
+        dates = data.findAll('time')
+        self.opinion_date = dates[0]['datetime']
+        self.purchase_date = dates[1]['datetime']
+        self.likes = int(data.find('button', {'class': 'vote-yes'})['data-total-vote'])
+        self.dislikes = int(data.find('button', {'class': 'vote-no'})['data-total-vote'])
+        self.description = data.find('div', {'class': 'user-post__text'}).text.strip()
+        print(self)
 
     def __str__(self):
-        if self.recommended:
-            return f"{self.id} true"
-        if not self.recommended:
-            return "false"
-        return "none"
+        return f"{self.id} {str(self.recommended)} {self.purchase_date} {self.opinion_date} {self.likes} {self.dislikes} {self.description}"
 
-    def __repr__(self):
-        return f"{self.id}<br>{self.author}<br>{self.recommended}<br>{self.rating}"
 
 
 class Pros(models.Model):
