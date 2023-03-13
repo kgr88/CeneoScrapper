@@ -1,0 +1,14 @@
+{% extends 'scrapper/base.html' %}
+{% block title %}Produkt{% endblock %}
+{% block content %}
+{% for opinia in opinie %}
+    {{ opinia.id }}<br>
+    {{ opinia.author }}<br>
+    {{ opinia.rating }}<br>
+    {{ opinia.recommended }}<br>
+    {{ opinia.opinion_date}}<br>
+    {{ opinia.likes}}<br>
+    {{ opinia.dislikes}}<br>
+    {{ opinia.description}}<br><br>
+{% endfor %}
+{% endblock %}

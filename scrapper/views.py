@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from .models import Opinion, Pros, Cons, Product
 from bs4 import BeautifulSoup
 import requests
-
+from datetime import datetime
 
 # Create your views here.
 def home_page(request):
@@ -43,15 +43,15 @@ def produkt(request):
 
         if not ran:
             title = soup.find('div', {'class': 'product-top__title'})
-            product = Product()
-            product.id = id
-            product.name = title.text.strip()
-            product.save()
+            product_object = Product()
+            product_object.id = id
+            product_object.name = title.text.strip()
+            product_object.save()
             ran = True
 
         for opinion in opinions:
-            opinion_object = Opinion()
-            opinion_object.extract_values(opinion, id)
+            opinion_object = Opinion(product = product_object)
+            opinion_object.extract_values(opinion)
             opinion_object.save()
             #print(opinion_object)
         try:
@@ -59,4 +59,6 @@ def produkt(request):
             url = "https://www.ceneo.pl" + next_url.get('href')
         except AttributeError:
             url = None
-    return render(request, 'scrapper/index.html')
+    opinie = product_object.opinion_set.all()
+
+    return render(request, 'scrapper/produkt.html', {'opinie': opinie})
