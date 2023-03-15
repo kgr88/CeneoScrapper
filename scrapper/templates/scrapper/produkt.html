@@ -1,14 +1,58 @@
 {% extends 'scrapper/base.html' %}
 {% block title %}Produkt{% endblock %}
+{% block scripts %}
+
+{% endblock %}
 {% block content %}
-{% for opinia in opinie %}
-    {{ opinia.id }}<br>
-    {{ opinia.author }}<br>
-    {{ opinia.rating }}<br>
-    {{ opinia.recommended }}<br>
-    {{ opinia.opinion_date}}<br>
-    {{ opinia.likes}}<br>
-    {{ opinia.dislikes}}<br>
-    {{ opinia.description}}<br><br>
-{% endfor %}
+    <table id="opinions" class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Autor</th>
+            <th>Ocena</th>
+            <th>Potwierdzenie zakupu</th>
+            <th>Rekomendacja</th>
+            <th>Data wystawienia opinii</th>
+            <th>Data zakupu</th>
+            <th>Opinia przydatna</th>
+            <th>Opinia nieprzydatna</th>
+            <th>Opis</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for opinia in opinie %}
+        <tr>
+        <td>{{ opinia.id }}</td>
+        <td>{{ opinia.author }}</td>
+        <td>{{ opinia.rating }}</td>
+        <td>{{ opinia.purchase_confirmation }}</td>
+        <td>{{ opinia.recommended }}</td>
+        <td>{{ opinia.opinion_date}}</td>
+        <td>{{ opinia.purchase_date}}</td>
+        <td>{{ opinia.likes}}</td>
+        <td>{{ opinia.dislikes}}</td>
+        <td>{{ opinia.description}}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>ID</th>
+            <th>Autor</th>
+            <th>Ocena</th>
+            <th>Potwierdzenie zakupu</th>
+            <th>Rekomendacja</th>
+            <th>Data wystawienia opinii</th>
+            <th>Data zakupu</th>
+            <th>Opinia przydatna</th>
+            <th>Opinia nieprzydatna</th>
+            <th>Opis</th>
+        </tr>
+        </tfoot>
+    </table>
+    <script>
+        $(document).ready(function () {
+        $('#opinions').DataTable();
+        });
+    </script>
 {% endblock %}

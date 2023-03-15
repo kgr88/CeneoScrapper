@@ -1,7 +1,6 @@
 from django.db import models
 from bs4 import BeautifulSoup
 import requests
-from datetime import datetime
 
 
 # Create your models here.
@@ -47,9 +46,7 @@ class Opinion(models.Model):
         except AttributeError:
             pass
         dates = data.findAll('time')
-        opinion_date_unformatted = dates[0]['datetime']
-        self.opinion_date = datetime.strptime(opinion_date_unformatted, "%Y-%m-%d %H:%M:%S")
-
+        self.opinion_date = dates[0]['datetime']
         try:
             self.purchase_date = dates[1]['datetime']
         except IndexError:

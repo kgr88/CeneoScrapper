@@ -3,13 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+<script
+      src="https://code.jquery.com/jquery-3.6.4.js"
+      integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
+      crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
 </head>
 <body>
     <a href="{% url 'scrapper:ekstrakcja' %}">Ekstrakcja opinii</a>
     <a href="{% url 'scrapper:lista' %}">Lista produktów</a>
     <a href="{% url 'scrapper:home_page' %}">Strona główna</a>
     <a href="{% url 'scrapper:autor' %}">O autorze</a><br>
+    {% block scripts %}
+    {% endblock %}
     {% block content %}
     {% endblock %}
+
 </body>
 </html>
