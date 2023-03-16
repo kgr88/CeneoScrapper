@@ -16,6 +16,8 @@
             <th>Data zakupu</th>
             <th>Opinia przydatna</th>
             <th>Opinia nieprzydatna</th>
+            <th>Zalety</th>
+            <th>Wady</th>
             <th>Opis</th>
         </tr>
     </thead>
@@ -27,10 +29,12 @@
         <td>{{ opinia.rating }}</td>
         <td>{{ opinia.purchase_confirmation }}</td>
         <td>{{ opinia.recommended }}</td>
-        <td>{{ opinia.opinion_date}}</td>
-        <td>{{ opinia.purchase_date}}</td>
+        <td>{{ opinia.opinion_date|date:"Y-m-d"}}</td>
+        <td>{{ opinia.purchase_date|date:"Y-m-d"}}</td>
         <td>{{ opinia.likes}}</td>
         <td>{{ opinia.dislikes}}</td>
+        <td>{{ opinia.pros }}</td>
+        <td>{{ opinia.cons }}</td>
         <td>{{ opinia.description}}</td>
         </tr>
     {% endfor %}
@@ -46,6 +50,8 @@
             <th>Data zakupu</th>
             <th>Opinia przydatna</th>
             <th>Opinia nieprzydatna</th>
+            <th>Zalety</th>
+            <th>Wady</th>
             <th>Opis</th>
         </tr>
         </tfoot>
