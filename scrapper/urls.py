@@ -10,4 +10,5 @@ urlpatterns = [
     path('autor/', views.autor, name='autor'),
     path('produkt/', views.produkt, name='produkt'),
     path('produkt/download/<int:product_id>', views.download_opinions, name='download_opinions'),
+    path('produkt/wykresy/<int:product_id>', views.show_graphs, name='show_graphs'),
 ]

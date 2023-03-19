@@ -1,0 +1,13 @@
+{% extends 'scrapper/base.html' %}
+{% block title %}Wykresy{% endblock %}
+{% block content %}
+     <h2>{{ product.name }}</h2>
+  <div>
+    <h3>Polecenia</h3>
+    <img src="data:image/png;base64,{{ pie_chart }}" alt="brak opinii">
+  </div>
+  <div>
+    <h3>Oceny</h3>
+    <img src="data:image/png;base64,{{ column_chart }}" alt="brak opinii">
+  </div>
+{% endblock %}

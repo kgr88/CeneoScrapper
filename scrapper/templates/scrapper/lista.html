@@ -3,5 +3,6 @@
 {% block content %}
     {% for product in products %}
         {{ product }} {{ product.null_pros }} {{ product.null_cons }} {{ product.average }} <a href="{% url 'scrapper:download_opinions' product_id=product.id %}">Pobierz opinie(.json)</a> <br>
+        <a href="{% url 'scrapper:show_graphs' product_id=product.id %}">Pokaż wykresy</a>
     {% endfor %}
 {% endblock %}

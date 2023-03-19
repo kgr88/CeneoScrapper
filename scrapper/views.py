@@ -1,15 +1,61 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .forms import SearchForm
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from .models import Opinion, Product
 from bs4 import BeautifulSoup
 import requests
 from django.db.models import Avg
-from django.http import HttpResponse
 from django.core import serializers
 import json
+import matplotlib.pyplot as plt
+from io import BytesIO
+import base64
 
 # Create your views here.
+def show_graphs(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    opinions = Opinion.objects.filter(product=product)
+    if not opinions:
+        return render(request, 'scrapper/wykresy.html')
+    # Calculate the count of recommended and not recommended opinions
+    recommended_count = opinions.filter(recommended=True).count()
+    not_recommended_count = opinions.filter(recommended=False).count()
+
+    # Create the pie chart for recommended vs not recommended
+    fig, ax = plt.subplots()
+    ax.pie([recommended_count, not_recommended_count], labels=['Polecam', 'Nie Polecam'], autopct='%1.1f%%',
+           startangle=90)
+    ax.legend(loc='center right', bbox_to_anchor=(1.25, 0.5))  #  adds legend with positioning
+    ax.axis('equal')
+    buffer1 = BytesIO()
+    plt.savefig(buffer1, format='png', bbox_inches='tight')
+    buffer1.seek(0)
+    pie_chart = base64.b64encode(buffer1.getvalue()).decode('utf-8')
+    buffer1.close()
+
+    # Create the column chart for rating occurrences count
+    ratings = list(opinions.values_list('rating', flat=True))
+    unique_ratings = sorted(set(ratings))
+    ratings_count = [ratings.count(rating) for rating in unique_ratings]
+    fig, ax = plt.subplots()
+    print(unique_ratings)
+    ax.bar(unique_ratings, ratings_count, width=0.4)
+    ax.set_xlabel('Ocena')
+    ax.set_ylabel('Ilość')
+    ax.set_xlim([-0.5, 5.5])
+    buffer2 = BytesIO()
+    plt.savefig(buffer2, format='png')
+    buffer2.seek(0)
+    column_chart = base64.b64encode(buffer2.getvalue()).decode('utf-8')
+    buffer2.close()
+
+    # Pass the chart images to the template
+    data = {
+        'pie_chart': pie_chart,
+        'column_chart': column_chart,
+        'product': product,
+    }
+    return render(request, 'scrapper/wykresy.html', data)
 
 def download_opinions(request, product_id):
     product = Product.objects.get(id=product_id)
