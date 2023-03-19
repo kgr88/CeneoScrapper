@@ -4,9 +4,22 @@ from django.http import HttpResponseRedirect
 from .models import Opinion, Product
 from bs4 import BeautifulSoup
 import requests
+from django.db.models import Avg
+from django.http import HttpResponse
+from django.core import serializers
+import json
 
 # Create your views here.
 
+def download_opinions(request, product_id):
+    product = Product.objects.get(id=product_id)
+    opinions = Opinion.objects.filter(product=product)
+    data = serializers.serialize('json', opinions)
+    data = data.replace('"model": "scrapper.opinion",', '')  # deletes field with model name
+    formatted_data = json.dumps(json.loads(data), indent=4, ensure_ascii=False)  # reformats data to make it more human readable
+    response = HttpResponse(formatted_data, content_type='application/json')
+    response['Content-Disposition'] = f'attachment; filename="{product.id}.json"'
+    return response
 
 def home_page(request):
     return render(request, 'scrapper/index.html')
@@ -29,7 +42,16 @@ def ekstrakcja(request):
 
 
 def lista(request):
-    return render(request, 'scrapper/index.html')
+    products = Product.objects.all()
+    for product in products:
+        product.null_pros = Opinion.objects.filter(product=product, pros__exact='').count()
+        product.null_cons = Opinion.objects.filter(product=product, cons__exact='').count()
+        average = Opinion.objects.filter(product=product).aggregate(Avg('rating'))['rating__avg']
+        if average:
+            product.average = format(average, '.2f')
+        else:
+            product.average = 'brak opinii'
+    return render(request, 'scrapper/lista.html', {'products': products})
 
 
 def autor(request):
@@ -42,7 +64,6 @@ def produkt(request):
     ran = False
     while url:
         response = requests.get(url)
-        print(response)
         soup = BeautifulSoup(response.text, "html.parser")
         print(soup.find('a', {'class': 'pagination__next'}))
         opinions = soup.select("div.js_product-review")
@@ -62,14 +83,10 @@ def produkt(request):
 
         try:
             next_url = soup.find('a', {'class': 'pagination__next'})
-           # print(next_url)
             url = "https://www.ceneo.pl" + next_url.get('href')
-            #print(url)
         except AttributeError:
-            #print(soup.beautify())
             url = None
-            #print(url)
 
+    opinions_count = Opinion.objects.filter(product=product_object).count()
     opinie = product_object.opinion_set.all()
-
-    return render(request, 'scrapper/produkt.html', {'opinie': opinie})
+    return render(request, 'scrapper/produkt.html', {'opinie': opinie, 'produkt': produkt, 'opinions_count': opinions_count})

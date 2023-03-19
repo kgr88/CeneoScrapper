@@ -1,4 +1,7 @@
 {% extends 'scrapper/base.html' %}
 {% block title %}Lista produktów{% endblock %}
 {% block content %}
+    {% for product in products %}
+        {{ product }} {{ product.null_pros }} {{ product.null_cons }} {{ product.average }} <a href="{% url 'scrapper:download_opinions' product_id=product.id %}">Pobierz opinie(.json)</a> <br>
+    {% endfor %}
 {% endblock %}
