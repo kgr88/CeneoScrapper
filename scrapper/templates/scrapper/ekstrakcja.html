@@ -1,10 +1,12 @@
 {% extends 'scrapper/base.html' %}
 {% block title %}Ekstrakcja opinii{% endblock %}
 {% block content %}
-<form action="{% url 'scrapper:ekstrakcja'%}" method="post">
+<div class="form">
+    <form action="{% url 'scrapper:ekstrakcja'%}" method="post">
     {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Submit">
-</form>
+    {{ form }} <br><br>
+    <input class="btn btn-primary" type="submit" value="Wyślij">
+    </form>
     {{ error }}
+</div>
 {% endblock %}

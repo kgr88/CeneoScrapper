@@ -1,0 +1,37 @@
+body{
+    background-color: #F8F8FF;
+}
+.product{
+    background-color: white;
+    border-radius: 16px;
+    border: 1px solid black;
+    padding: 8px;
+    height: 100%;
+}
+.navbar{
+    margin-bottom: 24px;
+    background-color: white;
+    font-size: 24px;
+}
+
+.form{
+    background-color: white;
+    border-radius: 16px;
+    border: 1px solid black;
+    padding: 16px;
+    width: 400px;
+    margin: auto;
+    text-align:center;
+}
+
+.wykres{
+    background-color: white;
+    height: 100%;
+    border-radius: 16px;
+    border: 1px solid black;
+    padding: 16px;
+}
+
+.wykres_img{
+    width: 100%;
+}

@@ -1,13 +1,22 @@
 {% extends 'scrapper/base.html' %}
 {% block title %}Wykresy{% endblock %}
 {% block content %}
-     <h2>{{ product.name }}</h2>
-  <div>
-    <h3>Polecenia</h3>
-    <img src="data:image/png;base64,{{ pie_chart }}" alt="brak opinii">
-  </div>
-  <div>
-    <h3>Oceny</h3>
-    <img src="data:image/png;base64,{{ column_chart }}" alt="brak opinii">
-  </div>
+    <div class="container text-center">
+        <h1>{{ product.name }}</h1><br>
+        <a class="btn btn-primary" style="margin-bottom: 8px!important;" href="{% url 'scrapper:produkt' product_id=product.id %}">Strona Produktu</a><br><br>
+        <div class="row">
+        <div class="col-6">
+            <div class=" wykres">
+            <h3>Polecenia</h3><br>
+            <img class="wykres_img" src="data:image/png;base64,{{ pie_chart }}" alt="brak opinii">
+                </div>
+        </div>
+        <div class="col-6">
+            <div class=" wykres">
+            <h3>Oceny</h3>
+            <img class="wykres_img" src="data:image/png;base64,{{ column_chart }}" alt="brak opinii">
+            </div>
+        </div>
+        </div>
+    </div>
 {% endblock %}

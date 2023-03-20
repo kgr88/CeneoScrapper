@@ -1,4 +1,25 @@
 {% extends 'scrapper/base.html' %}
 {% block title %}Strona Główna{% endblock %}
 {% block content %}
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-6">
+            <h1>Cel aplikacji</h1>
+            <span>Aplikacja ma na celu pobieranie opinii produktu z serwisu ceneo.pl oraz przygotowywanie statystyk dla pobranych danych </span>
+            <h1>Opis działania aplikacji</h1>
+            <span>Po wypełnieniu formularza, za pomocą bibliotek requests oraz beautifulsoup4 pobierane są dane z serwisu ceneo.
+            Następnie z pobranych danych odczytywane są pola każdej opinii produktu po czym są wprowadzane do bazy danych.
+            Na podstronie 'Lista Produktów' można przejść do podstron zawierających wykresy przygotowane na bazie pobranych opinii oraz pobrać plik .json z opiniami</span>
+            </div>
+            <h1>Zastosowane biblioteki</h1>
+                Django<br>
+                JSON<br>
+                OS<br>
+                Requests<br>
+                BeautifulSoup4<br>
+                DataTables<br>
+                Matplotlib<br>
+                Base64
+        </div>
+    </div>
 {% endblock %}

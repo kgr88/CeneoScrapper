@@ -1,12 +1,13 @@
 {% extends 'scrapper/base.html' %}
 {% block title %}Produkt{% endblock %}
-{% block scripts %}
-
-{% endblock %}
 {% block content %}
-    <h1>{{ opinions_count}}</h1>
+    <div class="container text-center">
+    <h1>{{ product.name }}</h1><br>
+    <a class="btn btn-primary" style="margin-bottom: 8px!important;" href="{% url 'scrapper:download_opinions' product_id=product.id %}">Pobierz opinie(.json)</a>
+    <a class="btn btn-primary" style="margin-bottom: 8px!important;" href="{% url 'scrapper:show_graphs' product_id=product.id %}">Pokaż wykresy</a>
+    </div>
     <table id="opinions" class="display" style="width:100%">
-    <thead>
+        <thead>
         <tr>
             <th>ID</th>
             <th>Autor</th>
@@ -21,45 +22,38 @@
             <th>Wady</th>
             <th>Opis</th>
         </tr>
-    </thead>
-    <tbody>
-    {% for opinia in opinie %}
-        <tr>
-        <td>{{ opinia.id }}</td>
-        <td>{{ opinia.author }}</td>
-        <td>{{ opinia.rating }}</td>
-        <td>{{ opinia.purchase_confirmation }}</td>
-        <td>{{ opinia.recommended }}</td>
-        <td>{{ opinia.opinion_date|date:"Y-m-d"}}</td>
-        <td>{{ opinia.purchase_date|date:"Y-m-d"}}</td>
-        <td>{{ opinia.likes}}</td>
-        <td>{{ opinia.dislikes}}</td>
-        <td>{{ opinia.pros }}</td>
-        <td>{{ opinia.cons }}</td>
-        <td>{{ opinia.description}}</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-    <tfoot>
-        <tr>
-            <th>ID</th>
-            <th>Autor</th>
-            <th>Ocena</th>
-            <th>Potwierdzenie zakupu</th>
-            <th>Rekomendacja</th>
-            <th>Data wystawienia opinii</th>
-            <th>Data zakupu</th>
-            <th>Opinia przydatna</th>
-            <th>Opinia nieprzydatna</th>
-            <th>Zalety</th>
-            <th>Wady</th>
-            <th>Opis</th>
-        </tr>
-        </tfoot>
+        </thead>
+        <tbody>
+        {% for opinia in opinie %}
+            <tr>
+                <td>{{ opinia.id }}</td>
+                <td>{{ opinia.author }}</td>
+                <td>{{ opinia.rating }}</td>
+                <td>{{ opinia.purchase_confirmation }}</td>
+                <td>{{ opinia.recommended }}</td>
+                <td>{{ opinia.opinion_date|date:"Y-m-d" }}</td>
+                <td>{{ opinia.purchase_date|date:"Y-m-d" }}</td>
+                <td>{{ opinia.likes }}</td>
+                <td>{{ opinia.dislikes }}</td>
+                <td>{{ opinia.pros }}</td>
+                <td>{{ opinia.cons }}</td>
+                <td>{{ opinia.description }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
     </table>
-    <script>
-        $(document).ready(function () {
-        $('#opinions').DataTable();
-        });
-    </script>
+    {% block scripts %}
+        <script
+                src="https://code.jquery.com/jquery-3.6.4.js"
+                integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
+                crossorigin="anonymous">
+        </script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+        <script>
+            $(document).ready(function() {
+    $('#opinions').DataTable();
+} );
+        </script>
+    {% endblock %}
+
 {% endblock %}
